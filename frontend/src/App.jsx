@@ -21,6 +21,8 @@ import ActivityLogs
 from "./pages/ActivityLogs";
 import TransferHistory
 from "./pages/TransferHistory";
+import Users
+from "./pages/Users";
 
 function App() {
   return (
@@ -108,6 +110,19 @@ element={
 
 <DashboardLayout>
 <ActivityLogs />
+</DashboardLayout>
+
+</ProtectedRoute>
+}
+/>
+
+<Route
+path="/users"
+element={
+<ProtectedRoute>
+
+<DashboardLayout>
+<Users />
 </DashboardLayout>
 
 </ProtectedRoute>

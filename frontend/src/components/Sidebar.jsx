@@ -87,6 +87,19 @@ className="block p-3 rounded hover:bg-slate-800 transition"
 Transfer History
 
 </Link>
+{role ===
+"manager" && (
+
+<Link
+to="/users"
+className="block p-3 rounded hover:bg-slate-800 transition"
+>
+
+Users
+
+</Link>
+
+)}
 
       </div>
 
