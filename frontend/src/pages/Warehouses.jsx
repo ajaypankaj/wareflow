@@ -40,7 +40,7 @@ quantity: ""
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/products",
+            "https://name-wareflow-backend.onrender.com/api/products",
             {
               headers: {
                 Authorization:
@@ -135,7 +135,7 @@ async () => {
 try {
 
 await axios.put(
-"http://localhost:5000/api/products/transfer",
+"https://name-wareflow-backend.onrender.com/api/products/transfer",
 transferData,
 {
 headers: {

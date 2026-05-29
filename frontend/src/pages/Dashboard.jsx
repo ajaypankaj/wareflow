@@ -34,14 +34,14 @@ stats.lowStock < 3
 : "Needs Attention";
 
 const topCategory =
-"Electronics"; const fetchStats = async () => { try { const res = await axios.get( "http://localhost:5000/api/dashboard", { headers: { Authorization: `Bearer ${token}` } } ); setStats( res.data ); } catch (error) { console.log(error); } };const fetchActivities =
+"Electronics"; const fetchStats = async () => { try { const res = await axios.get( "https://name-wareflow-backend.onrender.com/api/dashboard", { headers: { Authorization: `Bearer ${token}` } } ); setStats( res.data ); } catch (error) { console.log(error); } };const fetchActivities =
 async () => {
 
 try {
 
 const res =
 await axios.get(
-"http://localhost:5000/api/activity",
+"https://name-wareflow-backend.onrender.com/api/activity",
 {
 headers: {
 Authorization:

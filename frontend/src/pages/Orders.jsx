@@ -38,7 +38,7 @@ export default function Orders() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/products",
+            "https://name-wareflow-backend.onrender.com/api/products",
             {
               headers: {
                 Authorization:
@@ -65,7 +65,7 @@ export default function Orders() {
       try {
 
         await axios.post(
-          "http://localhost:5000/api/orders",
+          "https://name-wareflow-backend.onrender.com/api/orders",
           formData,
           {
             headers: {

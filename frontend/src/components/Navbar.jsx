@@ -37,7 +37,7 @@ try {
 
 const res =
 await axios.get(
-"http://localhost:5000/api/products/low-stock",
+"https://name-wareflow-backend.onrender.com/api/products/low-stock",
 {
 headers: {
 Authorization:

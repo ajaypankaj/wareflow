@@ -37,7 +37,7 @@ export default function Analytics() {
 
           const res =
             await axios.get(
-              "http://localhost:5000/api/products",
+              "https://name-wareflow-backend.onrender.com/api/products",
               {
                 headers: {
                   Authorization:

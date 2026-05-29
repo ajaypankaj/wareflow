@@ -31,7 +31,7 @@ ActivityLogs() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/activity",
+            "https://name-wareflow-backend.onrender.com/api/activity",
             {
               headers: {
                 Authorization:

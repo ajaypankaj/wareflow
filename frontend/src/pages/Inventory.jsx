@@ -291,7 +291,7 @@ const warehouseChart =
 
         const res =
           await axios.get(
-            "http://localhost:5000/api/products",
+            "https://name-wareflow-backend.onrender.com/api/products",
             {
               headers: {
                 Authorization:
@@ -390,7 +390,7 @@ useEffect(() => {
         if (editingId) {
 
           await axios.put(
-            `http://localhost:5000/api/products/${editingId}`,
+            `https://name-wareflow-backend.onrender.com/api/products/${editingId}`,
             {
               ...formData,
               quantity:
@@ -417,7 +417,7 @@ useEffect(() => {
         } else {
 
           await axios.post(
-            "http://localhost:5000/api/products",
+            "https://name-wareflow-backend.onrender.com/api/products",
             {
               ...formData,
               quantity:
@@ -486,7 +486,7 @@ useEffect(() => {
       try {
 
         await axios.delete(
-          `http://localhost:5000/api/products/${id}`,
+          `https://name-wareflow-backend.onrender.com/api/products/${id}`,
           {
             headers: {
               Authorization:
@@ -525,7 +525,7 @@ const restockProduct =
     try {
 
       await axios.put(
-        `http://localhost:5000/api/products/${product._id}`,
+        `https://name-wareflow-backend.onrender.com/api/products/${product._id}`,
         {
           quantity:
             Number(
