@@ -5,7 +5,7 @@ import {
 
 import axios
 from "axios";
-import { getActivities } from "../service/demoService";
+import { getActivities } from "../services/demoService";
 
 export default function
 ActivityLogs() {
