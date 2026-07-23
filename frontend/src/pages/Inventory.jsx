@@ -20,6 +20,13 @@ from "jspdf";
 
 import autoTable
 from "jspdf-autotable";
+import {
+  getProducts,
+  addProduct as demoAddProduct,
+  updateProduct as demoUpdateProduct,
+  deleteProduct as demoDeleteProduct,
+  restockProduct as demoRestockProduct
+} from "../services/demoService";
 
 export default function Inventory() {
 
@@ -82,7 +89,8 @@ useState(null);
     localStorage.getItem(
       "token"
     );
-
+const demoMode =
+localStorage.getItem("demoMode") === "true";
   
 const filteredProducts =
   products
@@ -284,6 +292,16 @@ const warehouseChart =
 
   const fetchProducts =
     async () => {
+       if (demoMode) {
+    setLoading(true);
+
+    setProducts(getProducts());
+
+    setLoading(false);
+
+    return;
+  }
+
 
       try {
 
@@ -386,6 +404,46 @@ useEffect(() => {
       }
 
       try {
+        if (demoMode) {
+
+  if (editingId) {
+
+    demoUpdateProduct(editingId, {
+      ...formData,
+      quantity: Number(formData.quantity),
+      price: Number(formData.price),
+    });
+
+    toast.success("Product Updated");
+
+  } else {
+
+    demoAddProduct({
+      ...formData,
+      quantity: Number(formData.quantity),
+      price: Number(formData.price),
+    });
+
+    toast.success("Product Added");
+
+  }
+
+  fetchProducts();
+
+  setFormData({
+    name: "",
+    category: "",
+    quantity: "",
+    price: "",
+    supplier: "",
+    warehouse: "",
+    image: "",
+  });
+
+  setEditingId(null);
+
+  return;
+}
 
         if (editingId) {
 
@@ -482,6 +540,15 @@ useEffect(() => {
       if (
         !confirmDelete
       ) return;
+      if (demoMode) {
+  demoDeleteProduct(id); // agar parameter ka naam id nahi hai to wahi variable use karna
+
+  setProducts(getProducts());
+
+  toast.success("Product Deleted");
+
+  return;
+}
 
       try {
 
@@ -521,6 +588,19 @@ const restockProduct =
     ) {
       return;
     }
+    if (demoMode) {
+
+  demoRestockProduct(
+    product._id,
+    Number(amount)
+  );
+
+  setProducts(getProducts());
+
+  toast.success("Stock Updated");
+
+  return;
+}
 
     try {
 

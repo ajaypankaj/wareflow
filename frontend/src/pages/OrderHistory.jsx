@@ -6,7 +6,7 @@ from "react";
 
 import axios
 from "axios";
-
+import { getOrders } from "../services/demoService";
 export default function
 OrderHistory() {
 
@@ -18,6 +18,8 @@ OrderHistory() {
     localStorage.getItem(
       "token"
     );
+    const demoMode =
+  localStorage.getItem("demoMode") === "true";
 
   useEffect(() => {
 
@@ -27,6 +29,12 @@ OrderHistory() {
 
   const fetchOrders =
     async () => {
+      if (demoMode) {
+
+  setOrders(getOrders());
+
+  return;
+}
 
       try {
 
@@ -125,12 +133,12 @@ OrderHistory() {
                   </td>
 
                   <td>
-
-                    {new Date(
-                      order.createdAt
-                    ).toLocaleDateString()}
-
-                  </td>
+  {
+    demoMode
+      ? order.date
+      : new Date(order.createdAt).toLocaleDateString()
+  }
+</td>
 
                 </tr>
               )

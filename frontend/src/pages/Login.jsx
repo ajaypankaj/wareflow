@@ -8,6 +8,14 @@ export default function Login() {
 
   const navigate =
     useNavigate();
+    const handleDemoLogin = () => {
+
+  localStorage.setItem("demoMode", "true");
+  localStorage.setItem("token", "demo-token");
+  localStorage.setItem("role", "manager");
+
+  navigate("/dashboard");
+};
 
   const [formData, setFormData] =
     useState({
@@ -27,6 +35,38 @@ export default function Login() {
     async (e) => {
 
       e.preventDefault();
+      // ======================
+// DEMO LOGIN
+// ======================
+
+if (
+  formData.email === "demo@wareflow.com" &&
+  formData.password === "demo123"
+) {
+
+  localStorage.setItem(
+    "demoMode",
+    "true"
+  );
+
+  localStorage.setItem(
+    "role",
+    "manager"
+  );
+
+  localStorage.setItem(
+    "token",
+    "demo-token"
+  );
+
+  toast.success(
+    "Welcome to Demo Mode"
+  );
+
+  navigate("/dashboard");
+
+  return;
+}
 
       try {
 
@@ -41,6 +81,10 @@ export default function Login() {
           res.data.token
         );
         localStorage.setItem(
+  "demoMode",
+  "false"
+);
+        localStorage.setItem(
   "role",
   res.data.role
 );
@@ -49,7 +93,7 @@ export default function Login() {
 "Login successful"
 );
 
-        navigate("/");
+      navigate("/dashboard");
 
       } catch (error) {
 
@@ -100,6 +144,32 @@ export default function Login() {
           Login
 
         </button>
+        <div className="mt-4 text-center">
+  <p className="text-gray-400 mb-2">──────── OR ────────</p>
+
+  <button
+    type="button"
+    onClick={handleDemoLogin}
+    className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition"
+  >
+    🚀 Continue as Demo
+  </button>
+
+  <p className="text-xs text-gray-400 mt-2">
+    Explore WareFlow without creating an account.
+  </p>
+</div>
+        <div className="mt-6 bg-slate-800 p-4 rounded-xl border border-slate-700">
+
+  <h3 className="font-bold text-center mb-3">
+    Demo Login
+  </h3>
+
+  <p>Email: demo@wareflow.com</p>
+
+  <p>Password: demo123</p>
+
+</div>
 
       </form>
     </div>

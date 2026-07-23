@@ -23,6 +23,7 @@ import TransferHistory
 from "./pages/TransferHistory";
 import Users
 from "./pages/Users";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -38,16 +39,21 @@ function App() {
           element={<Login />}
         />
 
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <Dashboard />
-              </DashboardLayout>
-            </ProtectedRoute>
-          }
-        />
+       <Route
+  path="/"
+  element={<Home />}
+/>
+
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <DashboardLayout>
+        <Dashboard />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/inventory"

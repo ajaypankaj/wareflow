@@ -6,6 +6,12 @@ from "axios";
 
 import toast
 from "react-hot-toast";
+import {
+  getProducts,
+  saveProducts,
+  getOrders,
+  saveOrders
+} from "../services/demoService";
 
 export default function Orders() {
 
@@ -24,6 +30,8 @@ export default function Orders() {
     localStorage.getItem(
       "token"
     );
+    const demoMode =
+  localStorage.getItem("demoMode") === "true";
 
   useEffect(() => {
 
@@ -33,6 +41,10 @@ export default function Orders() {
 
   const fetchProducts =
     async () => {
+      if (demoMode) {
+  setProducts(getProducts());
+  return;
+}
 
       try {
 
@@ -61,6 +73,71 @@ export default function Orders() {
     async (e) => {
 
       e.preventDefault();
+      if (demoMode) {
+
+  const products = getProducts();
+
+  const updatedProducts = products.map((p) => {
+
+    if (
+      p._id === formData.productId
+    ) {
+
+      if (
+        Number(p.quantity) <
+        Number(formData.quantity)
+      ) {
+
+        toast.error(
+          "Insufficient stock"
+        );
+
+        return p;
+      }
+
+      return {
+        ...p,
+        quantity:
+          Number(p.quantity) -
+          Number(formData.quantity)
+      };
+    }
+
+    return p;
+
+  });
+
+  saveProducts(updatedProducts);
+
+  const orders = getOrders();
+
+  const orderedProduct =
+    products.find(
+      p => p._id === formData.productId
+    );
+
+  orders.unshift({
+    _id: Date.now().toString(),
+    productName: orderedProduct?.name,
+    quantity: Number(formData.quantity),
+    warehouse: orderedProduct?.warehouse,
+    status: "Completed",
+    date: new Date().toLocaleString()
+  });
+
+  saveOrders(orders);
+
+  toast.success("Order Placed");
+
+  setProducts(updatedProducts);
+
+  setFormData({
+    productId: "",
+    quantity: ""
+  });
+
+  return;
+}
 
       try {
 

@@ -217,7 +217,11 @@ interval
   )}
 
 </div>
-
+ {localStorage.getItem("demoMode") === "true" && (
+  <span className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold mr-2">
+    🟢 DEMO MODE
+  </span>
+)}
         <button
           onClick={
             handleLogout

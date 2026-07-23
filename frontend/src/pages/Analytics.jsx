@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getProducts } from "../services/demoService";
 
 import {
   BarChart,
@@ -27,11 +28,49 @@ export default function Analytics() {
     localStorage.getItem(
       "token"
     );
+    const demoMode =
+  localStorage.getItem("demoMode") === "true";
 
   useEffect(() => {
 
     const fetchAnalytics =
       async () => {
+        if (demoMode) {
+
+  const products = getProducts();
+
+  // Category Chart
+  const categoryMap = {};
+
+  products.forEach((product) => {
+    categoryMap[product.category] =
+      (categoryMap[product.category] || 0) + 1;
+  });
+
+  const categoryChart = Object.keys(categoryMap).map((key) => ({
+    category: key,
+    count: categoryMap[key],
+  }));
+
+  setCategoryData(categoryChart);
+
+  // Warehouse Chart
+  const warehouseMap = {};
+
+  products.forEach((product) => {
+    warehouseMap[product.warehouse] =
+      (warehouseMap[product.warehouse] || 0) + 1;
+  });
+
+  const warehouseChart = Object.keys(warehouseMap).map((key) => ({
+    name: key,
+    value: warehouseMap[key],
+  }));
+
+  setWarehouseData(warehouseChart);
+
+  return;
+}
 
         try {
 

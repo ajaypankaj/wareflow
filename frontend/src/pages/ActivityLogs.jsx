@@ -5,6 +5,7 @@ import {
 
 import axios
 from "axios";
+import { getActivities } from "../service/demoService";
 
 export default function
 ActivityLogs() {
@@ -17,6 +18,8 @@ ActivityLogs() {
     localStorage.getItem(
       "token"
     );
+    const demoMode =
+  localStorage.getItem("demoMode") === "true";
 
   useEffect(() => {
 
@@ -26,6 +29,12 @@ ActivityLogs() {
 
   const fetchLogs =
     async () => {
+      if (demoMode) {
+
+  setLogs(getActivities());
+
+  return;
+}
 
       try {
 
@@ -112,12 +121,12 @@ ActivityLogs() {
                   </td>
 
                   <td>
-
-                    {new Date(
-                      log.createdAt
-                    ).toLocaleString()}
-
-                  </td>
+  {
+    demoMode
+      ? log.date
+      : new Date(log.createdAt).toLocaleString()
+  }
+</td>
 
                 </tr>
               )

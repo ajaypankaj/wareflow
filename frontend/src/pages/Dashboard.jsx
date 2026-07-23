@@ -6,6 +6,8 @@ import {
 
 import axios
 from "axios";
+import { getProducts } from "../services/demoService";
+import { demoOrders, demoActivities } from "../data/demoData";
 
 export default function Dashboard() {
 
@@ -18,7 +20,8 @@ export default function Dashboard() {
     localStorage.getItem(
       "token"
     );
-
+   const demoMode =
+localStorage.getItem("demoMode") === "true";
   const [stats,
     setStats] =
     useState({});
@@ -27,61 +30,90 @@ export default function Dashboard() {
     setActivities] =
     useState([]);
 
-  const fetchStats =
-    async () => {
+  const fetchStats = async () => {
 
-      try {
+  if (demoMode) {
 
-        const res =
-          await axios.get(
-            "https://name-wareflow-backend.onrender.com/api/dashboard",
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`
-              }
-            }
-          );
+   const products = getProducts();
 
-        setStats(
-          res.data
-        );
+const lowStockProducts = products.filter(
+  p => Number(p.quantity) < Number(p.lowStockThreshold)
+);
 
-      } catch (error) {
+const inventoryValue = products.reduce(
+  (sum, p) =>
+    sum + Number(p.price) * Number(p.quantity),
+  0
+);
 
-        console.log(error);
-      }
-    };
+setStats({
+  totalProducts: products.length,
+  totalOrders: demoOrders.length,
+  lowStock: lowStockProducts.length,
+  inventoryValue,
+  lowStockProducts
+});
+    return;
+  }
 
-  const fetchActivities =
-    async () => {
+  try {
 
-      try {
+    const res =
+      await axios.get(
+        "https://name-wareflow-backend.onrender.com/api/dashboard",
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
 
-        const res =
-          await axios.get(
-            "https://name-wareflow-backend.onrender.com/api/activity",
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`
-              }
-            }
-          );
+    setStats(res.data);
 
-        setActivities(
-          res.data.slice(
-            0,
-            5
-          )
-        );
+  } catch (error) {
 
-      } catch (error) {
+    console.log(error);
 
-        console.log(error);
-      }
-    };
+  }
 
+};
+
+  const fetchActivities = async () => {
+
+  if (demoMode) {
+
+    setActivities(
+      demoActivities.slice(0,5)
+    );
+
+    return;
+  }
+
+  try {
+
+    const res =
+      await axios.get(
+        "https://name-wareflow-backend.onrender.com/api/activity",
+        {
+          headers:{
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
+
+    setActivities(
+      res.data.slice(0,5)
+    );
+
+  } catch(error){
+
+    console.log(error);
+
+  }
+
+};
   useEffect(() => {
 
     fetchStats();

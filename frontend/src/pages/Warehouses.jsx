@@ -6,6 +6,10 @@ import {
 
 import axios
 from "axios";
+import {
+  getProducts,
+  saveProducts
+} from "../services/demoService";
 
 export default function
 Warehouses() {
@@ -26,15 +30,51 @@ quantity: ""
     localStorage.getItem(
       "token"
     );
+    const demoMode =
+  localStorage.getItem("demoMode") === "true";
 
   useEffect(() => {
 
     fetchWarehouses();
 
   }, []);
+  
 
   const fetchWarehouses =
     async () => {
+      if (demoMode) {
+
+  const products = getProducts();
+
+  const map = {};
+
+  products.forEach((product) => {
+
+    const warehouse = product.warehouse;
+
+    if (!map[warehouse]) {
+      map[warehouse] = {
+        name: warehouse,
+        totalProducts: 0,
+        totalQuantity: 0,
+        totalValue: 0,
+        products: []
+      };
+    }
+
+    map[warehouse].totalProducts += 1;
+    map[warehouse].totalQuantity += Number(product.quantity);
+    map[warehouse].totalValue +=
+      Number(product.price) * Number(product.quantity);
+
+    map[warehouse].products.push(product.name);
+
+  });
+
+  setWarehouses(Object.values(map));
+
+  return;
+}
 
       try {
 
@@ -131,6 +171,57 @@ e.target.value
 };
 const transferStock =
 async () => {
+  if (demoMode) {
+
+  const products = getProducts();
+
+  const updated = products.map((p) => {
+
+    if (
+      p.name === transferData.productId &&
+      p.warehouse === transferData.fromWarehouse
+    ) {
+
+      return {
+        ...p,
+        quantity:
+          Number(p.quantity) -
+          Number(transferData.quantity)
+      };
+    }
+
+    if (
+      p.name === transferData.productId &&
+      p.warehouse === transferData.toWarehouse
+    ) {
+
+      return {
+        ...p,
+        quantity:
+          Number(p.quantity) +
+          Number(transferData.quantity)
+      };
+    }
+
+    return p;
+
+  });
+
+  saveProducts(updated);
+
+  alert("Stock transferred");
+
+  fetchWarehouses();
+
+  setTransferData({
+    productId: "",
+    fromWarehouse: "",
+    toWarehouse: "",
+    quantity: ""
+  });
+
+  return;
+}
 
 try {
 
